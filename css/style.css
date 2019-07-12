@@ -1,8 +1,15 @@
+body {
+  background:#000;
+}
+.container {
+
+  display:none;
+}
 
 .clock {
   border-radius: 50%;
-  background: url(https://itsgeni.us/clock/img/clock-face.svg) no-repeat center;
-  background-size: 109%;
+  background: url('/clock/img/clock-face-black.png') no-repeat center;
+  background-size: 100vw;
   height: 80vh;
   width: 80vh;
   position: absolute;
@@ -47,7 +54,7 @@
 
 .digital {
   text-align: center;
-  font-size: 4vh;
+  font-size: 3vw;
   margin: auto;
   position: absolute;
   top: 20%;
@@ -100,4 +107,12 @@
 .timeChange{
   margin-top:10px;
   margin-right:10px;
+}
+
+
+@media screen and (max-width:700px) {
+  .clock {
+    background-size: 100vw;
+    height: 80vw;
+    width: 80vw;
 }

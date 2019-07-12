@@ -1,10 +1,13 @@
 jQuery(document).ready(function() {
+
+  var secondOffset = 0;
   var clock = function(setDate = null) {
+
     var setDate = jQuery(".setDate").val();
     if (setDate == "") {
       var momentCapture = moment();
     } else {
-      var momentCapture = moment(setDate);
+      var momentCapture = moment(setDate).add(secondOffset, 'seconds');
     }
     // Get todays date and time and display digital clock
     var date = momentCapture.format("MM-DD-YY");
@@ -22,9 +25,8 @@ jQuery(document).ready(function() {
 
     // Run Daytime Check
     dayTimeCheck(momentCapture.format("YYYY-MM-DD"), momentCapture);
+    secondOffset++;
   };
-  // Update every 1 second
-  var x = setInterval(clock, 1000);
 
   var rotateSeconds = function(seconds) {
     // Calulate Second Degrees
@@ -59,9 +61,19 @@ jQuery(document).ready(function() {
       // Display Nighttime Background
       jQuery("body").css({
         "background":
-          "url(https://cdn.pixabay.com/photo/2016/11/23/01/27/night-1851685__340.png) no-repeat center center fixed",
+        "url('/clock/img/landscape-1844226.svg') center center",
         "background-size": "cover",
-        "transition": "all 1s linear"
+        "background-attachment": "fixed",
+        "background-repeat": "no-repeat",
+        "transition": "all 1s linear",
+        "-webkit-transition": "all 1s linear"
+      });
+      jQuery('.clock').css({
+        "background":
+          "url('/clock/img/clock-face-white.png') no-repeat center",
+          "background-size": "109%",
+          "transition": "all 1s linear",
+          "-webkit-transition": "all 1s linear"
       });
       jQuery('.hour-hand').css({
         "background":"#fff"
@@ -79,9 +91,19 @@ jQuery(document).ready(function() {
       // Display Daytime Background
       jQuery("body").css({
         "background":
-          "url(https://cdn.pixabay.com/photo/2016/11/21/03/56/landscape-1844227__340.png) no-repeat center center fixed",
+          "url('/clock/img/landscape-1844227.svg') center center",
         "background-size": "cover",
-        "transition": "all 1s linear"
+        "background-attachment": "fixed",
+        "background-repeat": "no-repeat",
+        "transition": "all 1s linear",
+        "-webkit-transition": "all 1s linear"
+      });
+      jQuery('.clock').css({
+        "background":
+          "url('/clock/img/clock-face-black.png') no-repeat center",
+          "background-size": "109%",
+          "transition": "all 1s linear",
+          "-webkit-transition": "all 1s linear"
       });
       jQuery('.hour-hand').css({
         "background":"#000"
@@ -98,21 +120,29 @@ jQuery(document).ready(function() {
     }
   };
 
+  jQuery('.container').show('slow');
+  clock();
+  // Update every 1 second
+  var x = setInterval(clock, 1000);
+
   jQuery('.timeChange').on('click', function(){
+    secondOffset = 0;
     var newDate = moment().format('YYYY-MM-DD');
     jQuery('.hour-hand').css({
-      "transition": "all 1s linear"
+      "transition": "all 1s linear",
+      "-webkit-transition": "all 1s linear"
     });
     jQuery('.minute-hand').css({
-      "transition": "all 1s linear"
+      "transition": "all 1s linear",
+      "-webkit-transition": "all 1s linear"
     });
 
     switch(jQuery(this).data('time')){
       case "morning":
-        var newTime = newDate + ' 08:00'
+        var newTime = newDate + ' 08:30'
         break;
       case "night":
-        var newTime = newDate + ' 00:00'
+        var newTime = newDate + ' 23:30'
 
         break;
       case "now":
