@@ -59,11 +59,8 @@ jQuery(document).ready(function() {
     } else {
       momentCapture = moment(setDate, "YYYY-MM-DD hh:mm:ss a").add(secondOffset, 'seconds');
     }
-    // Get todays date and time and display digital clock
+    // Get todays date and time
     var date = momentCapture.format("MM-DD-YY");
-    var time = momentCapture.format("h:mm:ss a");
-    jQuery(".date-display").html(date);
-    jQuery(".time-display").html(time);
 
     // Set Analog Clock Hands
     var diff = momentCapture.diff(moment(date + " 00:00:00", "MM-DD-YY HH:mm:ss"));
@@ -119,7 +116,7 @@ jQuery(document).ready(function() {
       // Display Nighttime Background
       jQuery("body").css({
         "background":
-        "url('/clock/img/landscape-1844226.svg') center center",
+        "url('/clock/img/landscape-1844226_640.png') center center",
         "background-size": "cover",
         "background-attachment": "fixed",
         "background-repeat": "no-repeat",
@@ -142,27 +139,24 @@ jQuery(document).ready(function() {
         "background":"#fff"
       });
 
-      // Change Button Text and Digital Clock text to white
+      // Change Button Text text to white
       jQuery('.timeChange-container').css({
-        "color":"#fff"
-      });
-      jQuery('.digital').css({
         "color":"#fff"
       });
     } else {
 
       // Display Daytime Background
-      /*
+
       jQuery("body").css({
         "background":
-          "url('/clock/img/landscape-1844227.svg') center center",
+          "url('/clock/img/landscape-1844227_640.png') center center",
         "background-size": "cover",
         "background-attachment": "fixed",
         "background-repeat": "no-repeat",
         "transition": "all 1s linear",
         "-webkit-transition": "all 1s linear"
       });
-      */
+
       // Change clock face and hands to black
       jQuery('.clock').css({
         "background":
@@ -178,11 +172,8 @@ jQuery(document).ready(function() {
         "background":"#000"
       });
 
-      // Change button text and digital clock text to black
+      // Change button text text to black
       jQuery('.timeChange-container').css({
-        "color":"#000"
-      });
-      jQuery('.digital').css({
         "color":"#000"
       });
     }

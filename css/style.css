@@ -1,5 +1,11 @@
+html {
+  height:100%;
+  width:100%;
+}
+
 body {
   background:#000;
+  min-height:100%;
 }
 .container {
   display:none;
@@ -139,9 +145,34 @@ body {
 }
 
 
-@media screen and (max-width:800px) {
+@media screen and (max-width:1200px) {
   .clock {
     background-size: 100vw;
-    height: 80vw;
-    width: 80vw;
+    height:55vw;
+    width: 55vw;
+}
+
+@media screen and (max-width:740px) {
+  .clock {
+    background-size: 100vw;
+    height: 70vw;
+    width: 70vw;
+    top: unset;
+    bottom:10%;
+  }
+  .instructions, .sunButtons, .timeChange-buttons {
+    position:inherit;
+    top:0;
+    left:0;
+    right:0;
+    justify-content: center;
+  }
+
+  .instructions {
+    top: 50px;
+  }
+
+  .timeChange-buttons {
+    top:105px;
+  }
 }
