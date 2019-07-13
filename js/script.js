@@ -1,36 +1,92 @@
+// Hello.
+//
+// This is JSHint, a tool that helps to detect errors and potential
+// problems in your JavaScript code.
+//
+// To start, simply enter some JavaScript anywhere on this page. Your
+// report will appear on the right side.
+//
+// Additionally, you can toggle specific options in the Configure
+// menu.
+
 jQuery(document).ready(function() {
 
-  var secondOffset = 0;
-  var clock = function(setDate = null) {
+  // Set default location info in case location is unavailable.
+  var latitude = "40.7128";
+  var longitude = "74.0060";
+  var sunset = "18:00";
+  var sunrise = "07:00";
 
-    var setDate = jQuery(".setDate").val();
-    if (setDate == "") {
-      var momentCapture = moment();
+  // Get Location For Sunset / Sunrise Times
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
     } else {
-      var momentCapture = moment(setDate).add(secondOffset, 'seconds');
+      console.log("Geolocation is not supported by this browser.");
+    }
+
+  }
+
+  // Use Latitude and Longitue to request Sunrise and Sunset times from API
+  function showPosition(position) {
+      sunrise = localStorage.getItem("itsgenius_sunrise");
+      sunset = localStorage.getItem("itsgenius_sunset");
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      if(sunset===null){
+        var jqxhr = jQuery.get( "https://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude + '&formatted=0', function(data){
+          // Change from UTC
+          sunrise = moment(data.results.sunrise).local().format('hh:mm:ss a');
+          sunset = moment(data.results.sunset).local().format('hh:mm:ss a');
+          // Save in localstorage
+          localStorage.setItem("itsgenius_sunrise", sunrise);
+          localStorage.setItem("itsgenius_sunset", sunset);
+        });
+      }
+
+
+  }
+
+  var clock = function(setDate=null) {
+    if(secondOffset>0){
+      jQuery('.hour-hand').addClass('transform');
+      jQuery('.minute-hand').addClass('transform');
+    }
+    setDate = jQuery(".setDate").val();
+    var momentCapture = {};
+    if (setDate == "") {
+      momentCapture = moment();
+    } else {
+      momentCapture = moment(setDate, "YYYY-MM-DD hh:mm:ss a").add(secondOffset, 'seconds');
     }
     // Get todays date and time and display digital clock
     var date = momentCapture.format("MM-DD-YY");
     var time = momentCapture.format("h:mm:ss a");
-    var seconds = momentCapture.format("ss");
-    var minutes = momentCapture.format("mm");
-    var hours = momentCapture.format("hh");
     jQuery(".date-display").html(date);
     jQuery(".time-display").html(time);
 
     // Set Analog Clock Hands
+    var diff = momentCapture.diff(moment(date + " 00:00:00", "MM-DD-YY HH:mm:ss"));
+    var hours = (diff/(1000*60*60));
+
+    var minutes = (hours*60);
+    var seconds = (minutes*60);
+    jQuery('#setHours').text(momentCapture.format("hh"));
+    jQuery('#setMinutes').text(momentCapture.format("mm"));
+    jQuery('#setSeconds').text(momentCapture.format("ss"));
+    jQuery('#setAmPm').text(momentCapture.format("A"));
     rotateSeconds(seconds);
     rotateMinute(minutes);
     rotateHour(hours, minutes);
 
     // Run Daytime Check
     dayTimeCheck(momentCapture.format("YYYY-MM-DD"), momentCapture);
-    secondOffset++;
+    secondOffset = secondOffset + 1;
   };
 
   var rotateSeconds = function(seconds) {
     // Calulate Second Degrees
-    var secondDegree = seconds * 6;
+    var secondDegree = seconds * (360 / 60);
     // Set CSS
     var secondRotate = "rotate(" + secondDegree + "deg)";
     jQuery(".second-hand").css({ "transform": secondRotate, "-ms-transform": secondRotate, "-moz-transform": secondRotate, "-webkit-transform": secondRotate, "-o-transform": secondRotate});
@@ -46,7 +102,7 @@ jQuery(document).ready(function() {
 
   var rotateHour = function(hours, minutes) {
     // Calculate degrees between hours
-    var addMinuteDegree = parseInt(minutes) * 0.5;
+    var addMinuteDegree = (parseInt(minutes) * 0.5) /1000;
     // Calculate hour degrees
     var hourDegree = hours * (360 / 12) + addMinuteDegree;
     // Set CSS
@@ -55,9 +111,11 @@ jQuery(document).ready(function() {
   };
 
   var dayTimeCheck = function(date, datetime) {
-    var evening = moment(date + " 17:00");
-    var daytime = moment(date + " 07:00");
-    if (datetime >= evening || datetime <= daytime) {
+    // Get Sunset and Sunrise time Formats
+    var evening = moment(date + " " + sunset, "YYYY-MM-DD hh:mm:ss a" );
+    var daytime = moment(date + " " + sunrise, "YYYY-MM-DD hh:mm:ss a");
+
+    if (datetime < daytime || datetime >= evening) {
       // Display Nighttime Background
       jQuery("body").css({
         "background":
@@ -68,6 +126,8 @@ jQuery(document).ready(function() {
         "transition": "all 1s linear",
         "-webkit-transition": "all 1s linear"
       });
+
+      // Change Clock face and hands to white
       jQuery('.clock').css({
         "background":
           "url('/clock/img/clock-face-white.png') no-repeat center",
@@ -81,6 +141,8 @@ jQuery(document).ready(function() {
       jQuery('.minute-hand').css({
         "background":"#fff"
       });
+
+      // Change Button Text and Digital Clock text to white
       jQuery('.timeChange-container').css({
         "color":"#fff"
       });
@@ -88,7 +150,9 @@ jQuery(document).ready(function() {
         "color":"#fff"
       });
     } else {
+
       // Display Daytime Background
+      /*
       jQuery("body").css({
         "background":
           "url('/clock/img/landscape-1844227.svg') center center",
@@ -98,6 +162,8 @@ jQuery(document).ready(function() {
         "transition": "all 1s linear",
         "-webkit-transition": "all 1s linear"
       });
+      */
+      // Change clock face and hands to black
       jQuery('.clock').css({
         "background":
           "url('/clock/img/clock-face-black.png') no-repeat center",
@@ -111,6 +177,8 @@ jQuery(document).ready(function() {
       jQuery('.minute-hand').css({
         "background":"#000"
       });
+
+      // Change button text and digital clock text to black
       jQuery('.timeChange-container').css({
         "color":"#000"
       });
@@ -120,13 +188,26 @@ jQuery(document).ready(function() {
     }
   };
 
+
+  // Get Location and Sunrise/Sunset if needed
+  getLocation();
+
+  // Set Initial Counter for Morning / Night Time
+  var secondOffset = 0;
+
+  // Fade in content on page load.
   jQuery('.container').show('slow');
+
+  // Load time on analog clock on page load
   clock();
+
   // Update every 1 second
   var x = setInterval(clock, 1000);
 
+  // Change time based on button clicked
   jQuery('.timeChange').on('click', function(){
     secondOffset = 0;
+    var newTime = '';
     var newDate = moment().format('YYYY-MM-DD');
     jQuery('.hour-hand').css({
       "transition": "all 1s linear",
@@ -138,24 +219,115 @@ jQuery(document).ready(function() {
     });
 
     switch(jQuery(this).data('time')){
-      case "morning":
-        var newTime = newDate + ' 08:30'
+      case "sunrise":
+        newTime = newDate + ' ' + sunrise;
         break;
-      case "night":
-        var newTime = newDate + ' 23:30'
-
+      case "sunset":
+        newTime = newDate + ' ' + sunset;
         break;
       case "now":
-        var newTime = ''
+        newTime = '';
         break;
     }
     jQuery('.setDate').val(newTime);
-    jQuery('.hour-hand').css({
-      "transition": "none"
-    });
-    jQuery('.minute-hand').css({
-      "transition": "none"
-    });
-  })
+
+  });
+
+  jQuery('.timeAdjust').on('click',function(){
+    secondOffset = 0;
+    var hour = parseInt(jQuery('#setHours').text());
+    var minute = parseInt(jQuery('#setMinutes').text());
+    var seconds = parseInt(jQuery('#setSeconds').text()) + 1;
+    var amPm = jQuery('#setAmPm').text();
+    var type = jQuery(this).data('type');
+    switch(type){
+
+      case "hourUp":
+        if(hour==12){
+          hour = 01;
+        } else {
+          if(hour==11){
+            if(amPm=="AM"){
+              amPm = "PM";
+            } else {
+              amPm = "AM";
+            }
+          }
+          hour = hour + 1;
+        }
+        break;
+      case "hourDown":
+        if(hour==01){
+          hour = 12;
+        } else {
+          if(hour==12){
+            if(amPm=="AM"){
+              amPm = "PM";
+            } else {
+              amPm = "AM";
+            }
+          }
+          hour = hour - 1;
+        }
+        break;
+      case "minUp":
+        if(minute==59){
+          minute = 00;
+          if(hour==12){
+            hour = 01;
+          } else {
+            if(hour==11){
+              if(amPm=="AM"){
+                amPm = "PM";
+              } else {
+                amPm = "AM";
+              }
+            }
+            hour = hour + 1;
+          }
+
+        } else {
+          minute = minute + 1;
+        }
+        break;
+      case "minDown":
+        if(minute==00){
+          minute = 59;
+          if(hour==01){
+            hour=12;
+          } else {
+            if(hour==12){
+              if(amPm=="AM"){
+                amPm = "PM";
+              } else {
+                amPm = "AM";
+              }
+            }
+            hour = hour - 1;
+          }
+        } else {
+          minute = minute - 1;
+        }
+        jQuery('#setAmPm').text(amPm);
+        break;
+      case "amPm":
+        if(amPm=="AM"){
+          amPm = "PM";
+        } else {
+          amPm = "AM";
+        }
+        jQuery('#setAmPm').text(amPm);
+        break;
+
+    }
+
+    var date = moment();
+    var dateSet = date.format('YYYY-MM-DD') + ' ' + hour + ':' + minute + ':' + seconds + ' ' + amPm;
+    console.log(dateSet);
+    jQuery('.setDate').val(dateSet);
+  });
+
+
+
 
 });
