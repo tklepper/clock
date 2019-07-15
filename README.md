@@ -5,4 +5,4 @@ For this project, you are tasked with displaying a large analog clock that prope
 
 Primary coding languages used should be(but are not limited to) HTML, CSS, and JavaScript/jQuery. Please submit your example, along with a Github repository containing the code.
 
-Example: https://itsgeni.us/clock/
+Demo: https://itsgeni.us/clock/
