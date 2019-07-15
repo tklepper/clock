@@ -124,19 +124,6 @@ body {
   z-index: 1;
 }
 
-.instructions {
-  border-color: #000000;
-  position: absolute;
-  text-align: center;
-  top:200px;
-  padding: 10px;
-  border-radius: 10%;
-  background-color: #ffffff;
-  color: #000000;
-  z-index: 15;
-  display:none;
-}
-
 .second-hand {
   background: #ff3c41;
   height: 45%;
