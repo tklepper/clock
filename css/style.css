@@ -4,16 +4,51 @@ html {
 }
 
 body {
-  background:#000;
-  min-height:100%;
+  background: #000000;
+  filter:grayscale(1%);
+
 }
-.container {
-  display:none;
+
+.day {
+  background: url('../img/landscape-1844227_640.png');
+  min-height:100%;
+  transition: opacity 1.000s ease-in-out; /* Regola Standard */
+  -ms-transition: opacity 1.000s ease-in-out; /* Internet Explorer */
+  -moz-transition: opacity 1.000s ease-in-out; /* Firefox */
+  -webkit-transition: opacity 1.000s ease-in-out;/* Safari e Chrome*/
+  -o-transition: opacity 1.000s ease-in-out; /* Opera */
+  filter: grayscale(1%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.night {
+  background: url('../img/landscape-1844226_640.png');
+  min-height:100%;
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  transition: opacity 1.000s ease-in-out; /* Regola Standard */
+  -ms-transition: opacity 1.000s ease-in-out; /* Internet Explorer */
+  -moz-transition: opacity 1.000s ease-in-out; /* Firefox */
+  -webkit-transition: opacity 1.000s ease-in-out;/* Safari e Chrome*/
+  -o-transition: opacity 1.000s ease-in-out; /* Opera */
+  filter: grayscale(1%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.transparent {
+    opacity:0;
 }
 
 .clock {
   border-radius: 50%;
-  background: url('/clock/img/clock-face-black.png') no-repeat center;
+  background: url('../img/clock-face-black.png') no-repeat center;
   background-size: 100vw;
   height: 80vh;
   width: 80vh;
@@ -26,9 +61,13 @@ body {
   margin-right: auto;
   margin-top: auto;
   margin-bottom: auto;
+  transition: background 1s ease;
+  -webkit-transition: background 1s ease;
+  -moz-transition: background 1s ease;
+  -o-transitio: background 1s ease;
 }
 
-.clock:after {
+.clock::after {
   background: #000;
   border-radius: 50%;
   content: "";
@@ -57,19 +96,6 @@ body {
   left: 0;
 }
 
-.digital {
-  text-align: center;
-  font-size: 3vw;
-  margin: auto;
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-  height: 5%;
-  z-index: 10;
-}
-
 .hour-hand {
   background: #000;
   height: 20%;
@@ -96,6 +122,19 @@ body {
   position: absolute;
   transform-origin: 50% 100%;
   z-index: 1;
+}
+
+.instructions {
+  border-color: #000000;
+  position: absolute;
+  text-align: center;
+  top:200px;
+  padding: 10px;
+  border-radius: 10%;
+  background-color: #ffffff;
+  color: #000000;
+  z-index: 15;
+  display:none;
 }
 
 .second-hand {
@@ -129,7 +168,7 @@ body {
 .setAmPm {
   position:relative;
   margin-top:-27px;
-  right:-167px;
+  right:-175px;
 }
 
 #downAdjust {
@@ -160,16 +199,12 @@ body {
     top: unset;
     bottom:10%;
   }
-  .instructions, .sunButtons, .timeChange-buttons {
+  .sunButtons, .timeChange-buttons {
     position:inherit;
     top:0;
     left:0;
     right:0;
     justify-content: center;
-  }
-
-  .instructions {
-    top: 50px;
   }
 
   .timeChange-buttons {

@@ -10,7 +10,8 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"><link rel="stylesheet" href="./css/style.css">
     <title>It's About Time!</title>
   </head>
-  <body>
+  <body class="day transparent">
+    <div class="night"></div>
     <div class="container">
       <div class="timeChange-container">
 
@@ -19,19 +20,30 @@
               <button class="btn btn-primary timeChange sunrise" data-time="sunrise">Sunrise</button>
               <button class="btn btn-primary timeChange sunset" data-time="sunset">Sunset</button>
               <button class="btn btn-primary timeChange now" data-time="now">Now</button>
+              <!-- Generated markup by the plugin -->
+
               <input type="hidden" class="setDate" />
             </div>
           </div>
           <div class="row instructions">
-            <div class="col-auto">Click to see the sunset or sunrise for your location.<br>
-            Uses your location and Sunset/Sunrise API.<br>
-          Click on one of the arrows below to change the time.</div>
+            <div class="col-auto">If you allowed us to see your location, then the sunrise and sunset times will be based on your location. If not, well, that is very sad for you!</div>
           </div>
           <div class="row timeChange-buttons">
             <div class="col-auto">
-              <div id="upAdjust"><button data-type="hourUp" class="btn btn-sm btn-link timeAdjust hourUp"><i class="fa fa-chevron-up"></i></button><button data-type="minUp" class="btn btn-sm btn-link timeAdjust minUp"><i class="fa fa-chevron-up"></i></button></div>
-                <div class="setTime"><span id="setHours"></span>:<span id="setMinutes"></span>:<span id="setSeconds"></span> </div><div class="setAmPm"><button class="btn btn-primary timeAdjust" data-type="amPm" id="setAmPm"></button></div>
-              <div id="downAdjust"><button data-type="hourDown" class="btn btn-sm btn-link timeAdjust hourDown"><i class="fa fa-chevron-down"></i></button><button data-type="minDown" class="btn btn-sm btn-link timeAdjust minDown"><i class="fa fa-chevron-down"></i></button></div>
+              <div id="upAdjust">
+                <button data-type="hourUp" class="btn btn-sm btn-link timeAdjust hourUp"><i class="fa fa-chevron-up"></i></button>
+                <button data-type="minUp" class="btn btn-sm btn-link timeAdjust minUp"><i class="fa fa-chevron-up"></i></button>
+              </div>
+              <div class="setTime">
+                <span id="setHours"></span>:<span id="setMinutes"></span>:<span id="setSeconds"></span>
+              </div>
+              <div class="setAmPm">
+                <button class="btn btn-primary timeAdjust" data-type="amPm" id="setAmPm"></button>
+              </div>
+              <div id="downAdjust">
+                <button data-type="hourDown" class="btn btn-sm btn-link timeAdjust hourDown"><i class="fa fa-chevron-down"></i></button>
+                <button data-type="minDown" class="btn btn-sm btn-link timeAdjust minDown"><i class="fa fa-chevron-down"></i></button>
+              </div>
             </div>
           </div>
       </div>
